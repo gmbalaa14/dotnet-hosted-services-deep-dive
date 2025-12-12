@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DotNet8Sample/DotNet8Sample.csproj" Id="48b8e90a-ce26-440f-b266-10177f34733b" />
+  <Project Path="ProductsCatelog.ApiService/ProductsCatelog.ApiService.csproj" Id="63c0e9e0-c9ae-41f8-9643-b67b78fdeafa" />
+</Solution>
