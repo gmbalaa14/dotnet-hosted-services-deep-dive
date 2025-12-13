@@ -16,13 +16,13 @@ builder.Configuration.AddUserSecrets<Program>();
 builder.Services.Configure<WorkerOptions>(builder.Configuration.GetSection("WorkerOptions"));
 
 // IHostedService registration
-//builder.Services.AddHostedService<BasicHostedService>();
+builder.Services.AddHostedService<BasicHostedService>();
 
 // BackgroundService registration (PeriodicTimer Pattern)
 //builder.Services.AddHostedService<BackgroundTimerService>();
 
 // Resilient BackgroundService registration (Polly + PeriodicTimer Pattern)
-builder.Services.AddHostedService<ResilientWorkerService>();
+//builder.Services.AddHostedService<ResilientWorkerService>();
 
 var app = builder.Build();
 await app.RunAsync();

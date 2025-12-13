@@ -19,7 +19,7 @@ public class ProductCatalogHostedLifecycleService(
         _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, lifetime.ApplicationStopping);
 
         // Run when the host signals it has started
-        _startedRegistration = lifetime.ApplicationStarted.Register(async () =>
+        _startedRegistration = lifetime.ApplicationStarted.Register(async void () =>
         {
             await DoWorkAsync(_cts.Token);
         });
@@ -48,7 +48,7 @@ public class ProductCatalogHostedLifecycleService(
 
                 logger.LogInformation("Seeding product catalog with {SeedCount} products (configured: {Configured}).", seedCount, configured);
 
-                var products = seeder.Generate(seedCount);
+                var products = seeder.Generate(seedCount).ToList();
                 await repo.AddRangeAsync(products, cancellationToken);
                 logger.LogInformation("Seeded {Count} products.", products.Count());
             }

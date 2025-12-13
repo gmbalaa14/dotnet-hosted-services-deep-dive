@@ -44,7 +44,7 @@ public class ProductCatalogHostedService(
 
                 logger.LogInformation("Seeding product catalog with {SeedCount} products (configured: {Configured}).", seedCount, configured);
 
-                var products = seeder.Generate(seedCount);
+                var products = seeder.Generate(seedCount).ToList();
                 await repo.AddRangeAsync(products, cancellationToken);
                 logger.LogInformation("Seeded {Count} products.", products.Count());
             }
@@ -63,19 +63,20 @@ public class ProductCatalogHostedService(
         }
     }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    public Task StopAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Product catalog initializer stopping.");
 
         if (_cts == null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         // Signal cancellation to the executing method
         _cts.Cancel();
 
         logger.LogInformation("Product catalog initializer stopped.");
+        return Task.CompletedTask;
     }
 
     public void Dispose()

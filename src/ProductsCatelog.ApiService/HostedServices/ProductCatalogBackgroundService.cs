@@ -5,7 +5,7 @@ namespace ProductsCatelog.ApiService.HostedServices;
 public class ProductCatalogBackgroundService(
     IServiceScopeFactory serviceScopeFactory,
     ILogger<ProductCatalogBackgroundService> logger,
-    IConfiguration configuration) : BackgroundService, IDisposable // BackgroundService is a abstract class that already implements IHostedService and IDisposable
+    IConfiguration configuration) : BackgroundService // BackgroundService is a abstract class that already implements IHostedService and IDisposable
 {
     public override Task StartAsync(CancellationToken cancellationToken)
     {
@@ -46,7 +46,7 @@ public class ProductCatalogBackgroundService(
 
                 logger.LogInformation("Seeding product catalog with {SeedCount} products (configured: {Configured}).", seedCount, configured);
 
-                var products = seeder.Generate(seedCount);
+                var products = seeder.Generate(seedCount).ToList();
                 await repo.AddRangeAsync(products, stoppingToken);
                 logger.LogInformation("Seeded {Count} products.", products.Count());
             }
@@ -69,10 +69,5 @@ public class ProductCatalogBackgroundService(
     {
         logger.LogInformation("Product catalog background service stopping.");
         return base.StopAsync(cancellationToken); // We should call the base implementation to ensure proper shutdown; it will trigger cancellation of the ExecuteAsync method.
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
     }
 }
